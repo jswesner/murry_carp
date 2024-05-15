@@ -46,7 +46,7 @@ prop_plot = prop_dots %>%
                   linewidth = 0.2,
                   fill = "grey50",
                   alpha = 0.4) + 
-  stat_pointinterval(aes(y = .epred, color = river_label), 
+  stat_pointinterval(aes(y = .epred, color = river_label, group = site_id_f), 
                      .width = 0.95, size = 1) +
   theme_default() + 
   facet_wrap(~panel) +
@@ -88,7 +88,7 @@ prop_plot_interaction = prop_dots_interaction %>%
   ggplot(aes(x = prop_silver_wt, fill = river_label)) +
   stat_lineribbon(data = prop_lineribbon_interaction, aes(y = .epred),
                   alpha = 0.3) + 
-  stat_pointinterval(aes(y = .epred, color = river_label), 
+  stat_pointinterval(aes(y = .epred, color = river_label, group = site_id_f), 
                      .width = 0.95, size = 0.5,
                      position = position_jitter(width = 0.005)) +
   theme_default() + 
@@ -530,3 +530,47 @@ hypothetical_plot = hypothetical_data %>%
 ggview::ggview(hypothetical_plot, width = 4, height = 3)
 ggsave(hypothetical_plot, width = 4, height = 3, file = "plots/hypothetical_plot.jpg",
        dpi = 500)
+
+
+# plot segmented ---------------------------------------------------------
+
+lm_segmented = readRDS(file = "models/lm_segmented.rds")
+
+seg_preds = predict.segmented(lm_segmented, se.fit = T) %>% 
+  as_tibble() %>% 
+  mutate(prop_silver_wt = median_epred$prop_silver_wt)
+
+breakpoints = lm_segmented$psi %>% as_tibble() %>%
+  mutate(low = Est. - St.Err,
+         high = Est. + St.Err) %>% 
+  pivot_longer(cols = c(low, high)) %>% 
+  pull(value)
+
+
+segmented_plot = prop_dots %>% 
+  ggplot(aes(x = prop_silver_wt)) + 
+  stat_pointinterval(aes(y = .epred, color = river_label, group = site_id_f), 
+                     .width = 0.95, size = 1) +
+  geom_ribbon(data = seg_preds, aes(x = prop_silver_wt, 
+                                  ymin = fit - se.fit,
+                                  ymax = fit + se.fit),
+            alpha = 0.6) +
+  geom_line(data = seg_preds, aes(x = prop_silver_wt, 
+                                  y = fit)) +
+  theme_default() + 
+  facet_wrap(~panel) +
+  labs(y = "\u03bb",
+       x = "Silver Carp relative biomass\n(proportion of total biomass)",
+       color = "") +
+  scale_color_colorblind() +
+  theme(strip.text = element_text(hjust = 0)) +
+  geom_vline(xintercept = breakpoints) +
+  geom_rect(aes(xmin = min(breakpoints),
+                xmax = max(breakpoints),
+                ymin = -Inf,
+                ymax = Inf),
+            alpha = 0.3,
+            color = "blue")
+
+ggsave(segmented_plot, file = "plots/segmented_plot.jpg", width = 6, height = 6)
+saveRDS(segmented_plot, file = "plots/segmented_plot.rds") 
