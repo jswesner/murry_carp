@@ -112,7 +112,7 @@ library(patchwork)
 
 interaction_plot = (prop_plot + theme(axis.title.x = element_blank())) / prop_plot_interaction
 
-ggview::ggview(interaction_plot, width = 6, height = 5)
+#ggview::#ggview(interaction_plot, width = 6, height = 5)
 ggsave(interaction_plot, file = "plots/interaction_plot.jpg", width = 6, height = 5, dpi = 500)
 saveRDS(interaction_plot, file = "plots/interaction_plot.rds")
 
@@ -196,7 +196,7 @@ ohio_timeseries = prop_dots %>%
 
 ohio_timeseries
 
-ggview::ggview(ohio_timeseries, width = 6.5, height = 2)
+#ggview::#ggview(ohio_timeseries, width = 6.5, height = 2)
 ggsave(ohio_timeseries, file = "plots/ohio_timeseries.jpg", width = 6.5, height = 2)
 saveRDS(ohio_timeseries, file = "plots/ohio_timeseries.rds")
 
@@ -274,7 +274,7 @@ illinois_timeseries = prop_dots_all %>%
   ylim(-1.2, -0.85)
 
 
-ggview::ggview(illinois_timeseries, width = 6.5, height = 2.5)
+#ggview::#ggview(illinois_timeseries, width = 6.5, height = 2.5)
 ggsave(illinois_timeseries, width = 6.5, height = 2.5, dpi = 500,
        file = "plots/illinois_timeseries.jpg")
 saveRDS(illinois_timeseries, file = "plots/illinois_timeseries.rds")
@@ -347,7 +347,7 @@ time_series_rivers = plot_grid((ohio_timeseries + labs(title = "a) Ohio River") 
                                (illinois_timeseries + labs(title = "b) Illinois River")),
                                ncol = 1)
 
-ggview::ggview(time_series_rivers, width = 6.5, height = 5)
+#ggview::#ggview(time_series_rivers, width = 6.5, height = 5)
 ggsave(time_series_rivers, file = "plots/time_series_rivers.jpg", width = 6.5, height = 5, dpi = 500)
 saveRDS(time_series_rivers, file = "plots/time_series_rivers.rds")
 
@@ -442,7 +442,7 @@ isd_plot_illinois = orc_il_resampled %>%
         legend.position = "top") +
   NULL
 
-ggview::ggview(isd_plot_illinois, width = 6.5, height = 8.5)
+#ggview::#ggview(isd_plot_illinois, width = 6.5, height = 8.5)
 ggsave(isd_plot_illinois, width = 6.5, height = 8.5, dpi = 500,
        file = "plots/isd_plot_illinois.jpg")
 saveRDS(isd_plot_illinois, file = "plots/isd_plot_illinois.rds")
@@ -465,7 +465,7 @@ isd_plot_ohio = orc_il_resampled %>%
         legend.position = "top") +
   NULL
 
-ggview::ggview(isd_plot_ohio, width = 6.5, height = 8)
+#ggview::#ggview(isd_plot_ohio, width = 6.5, height = 8)
 ggsave(isd_plot_ohio, width = 6.5, height = 8, dpi = 500,
        file = "plots/isd_plot_ohio.jpg")
 saveRDS(isd_plot_ohio, file = "plots/isd_plot_ohio.rds")
@@ -527,7 +527,7 @@ hypothetical_plot = hypothetical_data %>%
   NULL
 
 
-ggview::ggview(hypothetical_plot, width = 4, height = 3)
+#ggview::#ggview(hypothetical_plot, width = 4, height = 3)
 ggsave(hypothetical_plot, width = 4, height = 3, file = "plots/hypothetical_plot.jpg",
        dpi = 500)
 
